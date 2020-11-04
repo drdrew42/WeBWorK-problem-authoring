@@ -119,12 +119,12 @@
 * Implicit Equation (implicit plane for linear)
 * PopUp & RadioButtons (for multiple choice)
 
-# Problem TEXT
+# Displaying the problem content
 
 ## PGML
 * [Reference](https://webwork.maa.org/wiki/Introduction_to_PGML)
 * BEGIN_PGML / END_PGML
-  * won't execute code in this block (without 
+  * won't execute code in this block (without `[@...@]`)
 * mostly-standard markdown
   * bold
   * italics
