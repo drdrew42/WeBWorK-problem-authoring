@@ -1,0 +1,50 @@
+# https://webwork.maa.org/wiki/PopUpLists
+DOCUMENT();
+loadMacros(
+  "PGstandard.pl",
+  "PGML.pl",
+  "parserPopUp.pl" # specialized context for multiple choice
+);
+
+TEXT(beginproblem());
+$showPartialCorrectAnswers = 1;
+
+Context("Numeric");
+
+# an array of options - from which students will select
+@options = (
+  'option 1 - this is incorrect',
+  'option 2 - this is incorrect',
+  'option 3 - this is correct',
+  'option 4 - this is incorrect',  
+);
+
+# one of the options is "correct" - must be an exact match
+$answer = $options[2]; # remember that index starts at 0
+
+# the actual "PopUp" object
+# provide it a _reference_ to an array of options, and one of the options that is 'correct'
+$popup = PopUp([@options], $answer);
+
+# this is equivalent to: 
+# (note the square brackets for the array of options)
+
+# any options wrapped in a second set of square-brackets wlill be shuffled
+$shuffledPopup = PopUp([[@options]], $answer);
+
+# 
+# BEGIN problem display
+#
+# variables for display must be [$variable]
+# LaTeX math-mode: [`\LaTeX`]
+# LaTeX displaystyle: [``\LaTeX``]
+
+BEGIN_PGML
+
+Which of the following is correct?  [___]{$popup}
+
+Which of the following is correct?  [___]{$shuffledPopup}
+
+END_PGML
+ENDDOCUMENT();
+

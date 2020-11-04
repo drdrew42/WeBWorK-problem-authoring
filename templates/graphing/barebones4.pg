@@ -1,0 +1,102 @@
+DOCUMENT();
+loadMacros(
+  "PGstandard.pl",
+  "PGML.pl",
+  "PGgraphmacros.pl" # add-on support for generating images
+);
+
+TEXT(beginproblem());
+$ShowPartialCorrectAnswers = 1;
+
+Context("Numeric");
+
+# instructions to be displayed:
+
+$instructions = "Evaluate the following:";
+
+# basic randomization:
+# $variable = random( low, high, interval );
+#
+# or just type static LaTeX:
+
+$problemTeX = "\int_0^1\pi\,dx";
+
+# your "$answer" must have the following format:
+#
+# $answer = Object("expression");
+#
+# Basic Object Options: Real, Point, Formula, Interval, Complex
+#
+# Lists of values are also possible: List(Object(""),Object(""),...);
+
+$answer = Real("pi");
+
+# 
+# BEGIN problem display
+#
+# variables for display must be [$variable]
+# LaTeX math-mode: [`\LaTeX`]
+# LaTeX displaystyle: [``\LaTeX``]
+
+BEGIN_PGML
+
+[$instructions] 
+
+[``[$problemTeX]``]
+
+Answer: [__________]{$answer}
+
+END_PGML
+
+# https://webwork.maa.org/wiki/DynamicImages
+# initialize the "blank" graph
+$graph = init_graph(-1,-1,4,4,
+  axes=>[0,0],
+  grid=>[5,5],
+  size=>[400,400]
+);
+
+# draw on the canvas - "function for variable in <domain> using color and weight"
+add_functions($graph, "pi for x in <0,1> using color:blue and weight:2");
+
+#
+#  in order to use filled shapes, we cannot use the graph coordinates
+#  instead, translate from graph coordinates to pixel coordinates
+#
+$xminpixel = $graph->ii(0);
+$xmaxpixel = $graph->ii(1);
+$yminpixel = $graph->jj(0);
+$ymaxpixel = $graph->jj(pi);
+# 
+#  use filledRectangle and rectangle from GD.pm, accessed via ->im-> 
+#
+$lightblue = $graph->im->colorAllocate(148,201,255);
+$graph->im->filledRectangle($xminpixel,$yminpixel,$xmaxpixel,$ymaxpixel,$lightblue);
+
+# highlight the boundaries of the domain
+$graph->moveTo(0,0);
+$graph->lineTo(0,pi, 'red', 2, 'dashed');
+
+$graph->moveTo(1,0);
+$graph->lineTo(1,pi, 'red', 2, 'dashed');
+
+$graph->stamps(closed_circle(0,pi, 'blue'));
+$graph->stamps(closed_circle(1,pi, 'blue'));
+
+# turn the canvas into an image for display
+$image = insertGraph($graph);
+# use [@...@] to run code inside a PGML block
+# an asterisk after the brackets indicates that the code is generating HTML that needs to be processed
+
+BEGIN_PGML_SOLUTION
+
+[@
+  image($image, 
+  extra_html_tags=>'alt="graph of y=pi on the domain [0,1]"', 
+  width=>400, 
+  height=>400)
+@]*
+
+END_PGML_SOLUTION
+ENDDOCUMENT();
+

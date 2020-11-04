@@ -1,0 +1,50 @@
+DOCUMENT();
+loadMacros(
+  "PGstandard.pl",
+  "PGML.pl"
+);
+
+TEXT(beginproblem());
+$ShowPartialCorrectAnswers = 1;
+
+Context("Numeric");
+
+# basic randomization:
+# $variable = random( low, high, interval );
+#
+# or just type static LaTeX:
+
+$problemTeX = "\int_0^1\pi\,dx";
+
+$constantFunction = Formula("pi");
+$upperBound = random(-1,4);
+$lowerBound = random(-1,4);
+
+# your "$answer" must have the following format:
+#
+# $answer = Object("expression");
+#
+# Basic Object Options: Real, Point, Formula, Interval, Complex
+#
+# Lists of values are also possible: List(Object(""),Object(""),...);
+
+$answer = Real("$constantFunction * ($upperBound - $lowerBound)");
+
+# 
+# BEGIN problem display
+#
+# variables for display must be [$variable]
+# LaTeX math-mode: [`\LaTeX`]
+# LaTeX displaystyle: [``\LaTeX``]
+
+BEGIN_PGML
+
+Evaluate the following integral:  
+
+[`` \int_{[$lowerBound]}^{[$upperBound]} [$constantFunction] \, dx``]
+
+Answer: [__________]{$answer}
+
+END_PGML
+ENDDOCUMENT();
+
