@@ -1,0 +1,46 @@
+DOCUMENT();
+loadMacros("PGstandard.pl","PGML.pl");
+TEXT(beginproblem());
+$ShowPartialCorrectAnswers = 1;
+
+Context("Numeric");
+
+# instructions to be displayed:
+
+$instructions = "Evaluate the following:";
+
+# basic randomization:
+# $variable = random( low, high, interval );
+#
+# or just type static LaTeX:
+
+$problemTeX = "\int_0^1\pi\,dx";
+
+# your "$answer" must have the following format:
+#
+# $answer = Object("expression");
+#
+# Basic Object Options: Real, Point, Formula, Interval, Complex
+#
+# Lists of values are also possible: List(Object(""),Object(""),...);
+
+$answer = Real("pi");
+
+# 
+# BEGIN problem display
+#
+# variables for display must be [$variable]
+# LaTeX math-mode: [`\LaTeX`]
+# LaTeX displaystyle: [``\LaTeX``]
+
+BEGIN_PGML
+
+[$instructions] 
+
+[``[$problemTeX]``]
+
+Answer: [__________]{$answer}
+
+END_PGML
+ENDDOCUMENT();
+
