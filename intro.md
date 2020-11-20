@@ -1,7 +1,8 @@
-# Fundamentals (not covered)
+# Fundamentals of Perl
 ## Perl 101
 * comments begin with `#`
-  * on their own lines, or at the end of a line of code
+  * on their own lines, 
+  * _or_ at the end of a line of code
 * all "lines" of code end with `;`
   * one line of code can be spread across multiple newlines
   * blocks of code `{}` from conditionals (`if`) or loops (`for` or `while`) don't require semicolon after the close brace
@@ -34,10 +35,10 @@
 * Major steps in evolution:
   * MathObjects / Contexts
   * PGML
-* Problem layout
-  * Tagging/metadata
-  * Problem setup
-  * Problem text (+ hints/solutions)
+* Basic framework for building problems:
+  * Tagging/metadata (comments at the start of the file)
+  * Problem setup (combination of perl and MathObjects)
+  * Problem text, and optional hints/solutions (in PGML)
 
 # Setting up your problem
 
@@ -48,7 +49,8 @@
   * "step" is optional, and defaults to 1
   * possible results: `min, min+step, min+2*step, ...`
     * if _max - min_ is not a multiple of _step_, then _max_ is not a possible result of the randomization
-    * e.g. `random(0,1.5,0.2)`
+    * e.g. `random(0,1.5,0.2)` will never result in 1.5
+  * alternatively, there is `list_random(2,3,5,7,11,13)` which randomly selects from a given list
 
 
 ## Math Objects - what are they?
@@ -58,7 +60,7 @@
     * methods are functions (actions)
     * properties are static (configurations)
 * they know things about themselves
-  * how their representation might be "reduced"
+  * how their representation might be "reduced" (simplified)
   * actions such as variable substitution/evaluation or their derivative with respect to a given variable
   * their representation in TeX
   * how their comparison should be evaluated (answer checker)
@@ -138,14 +140,14 @@
   * MathObjects know how to TeX themselves: ``[`[$formula]`]``
 * executing code `[@code@]`
 * embedding more complex objects - `[stuff]*`, `[stuff]**`, or `[stuff]***`
-  * are you generating HTML or PGML in bracketed code?
+  * this is for situations where you are generating HTML or PGML in bracketed code?
   * as Mike says, just keep adding asterisks until it works ;P
 * answer blanks: `[_]{$answerVariable}`
 
 ## Answer checkers
 * this is a **DEEP** rabbit hole
 * providing an answer as a MathObject makes this "just work"
-* `$showPartialCorrectAnswers = 1;` (or `0`)
+* `$showPartialCorrectAnswers = 1;` (or `0`) gives students individual feedback on each answer blank
   * must be set anywhere _outside_ of PGML blocks
   * itemized correct/incorrect
   * itemized feedback
